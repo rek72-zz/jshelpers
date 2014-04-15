@@ -147,7 +147,7 @@ var Helper = {
         // log with console or make a console (for sink'n ie)
         if (!window.console) {
             var id = 'stinkin_IE_console_logger';
-            if (typeof (msg) == 'object') msg = '[OBJECT]: ' + $.param(msg);
+            if (typeof (msg) === 'object') msg = '[OBJECT]: ' + $.param(msg);
             msg = '> ' + msg + '<br />';
 
             if ($('#' + id).length > 0) {
@@ -238,7 +238,7 @@ var Helper = {
 
         // define
         var maxFit = maxChars - 3;
-        var truncateAt =(truncateAt == -1 || truncateAt < maxChars / 2) ? maxFit : string.lastIndexOf(' ', maxFit);
+        var truncateAt =(truncateAt === -1 || truncateAt < maxChars / 2) ? maxFit : string.lastIndexOf(' ', maxFit);
 		var replaceString = (arguments.length === 3) ? replaceWith : '&#8230;';
 
         // return truncated string
@@ -252,7 +252,7 @@ var Helper = {
         /// <param name="focusInputField" type="string">pass in false to avoid the automatic .focus() call</param>
         ///
         $(inputField).unbind('keydown').keydown(function (e) {
-            if (e.keyCode == 13) {
+            if (e.keyCode === 13) {
                 e.preventDefault();
                 $(buttonToClick).click();
             }
