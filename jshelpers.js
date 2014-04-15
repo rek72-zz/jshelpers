@@ -210,7 +210,7 @@ var Helper = {
         return string.replace(/\n/g, '<br />');
     },
 
-    slctrs: function (selectors/*unlimited arguments*/) {
+    selectors: function (selectors/*unlimited arguments*/) {
         /// <summary>Build multiple selectors for jQuery.  Serves as a shortcut for jquery selectors by eleminating the use of [ + ', ' + ] between selectors or having to use jQuery.add().add()</summary>
         /// <param name="selectors">Can be an unlimited amount of arguments. Examples: Utils.slctrs(string1, string2, string3, string4)</param>
         // define
