@@ -283,14 +283,7 @@ var Helper = {
         }
 
         return numA + numB;
-    },
-
-    isUndefined: function (item) {
-        /// <summary>
-        /// Shortcut to check if an object (obj, str, int, etc.) is undefined
-        /// </summary>
-        return typeof (item) === 'undefined';
-    },
+    }
 
     getResponseTimeInSecs: function (startTime, endTime) {
         /// <summary>Returns the response time from a start and end time (such as in XHR call) in seconds.</summary>
