@@ -2,7 +2,7 @@
 //
 //  Namespace : Helper
 //  Description: Useful methods I made to make life easier
-//  Author:  Robert Kever
+//  Author:  rek72
 //  Dependencies: jQuery 1.7+ required!
 //
 //############################################################################################################################################
