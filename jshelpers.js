@@ -57,7 +57,7 @@ var Helper = {
             if (pairsObject.length < 1) return false;
 
             // now return the value matching key, or false if the key does not exist
-            return (pairsObject[key] === undefined) ? false : pairsObject[key];
+            return pairsObject[key] || false;
         },
 
         set: function (obj, kvp/*optional*/) {
