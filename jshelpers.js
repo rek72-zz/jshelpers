@@ -65,6 +65,8 @@ var Helper = {
             ///if kvp argument exists, returns the updated kvp string.</summary>
             ///<param name="obj" type="object literal">object literal of key/values to set</param>
             ///<param name="kvp" type="string">String of key/value pairs, default grabs location.hash</param>
+            ///<return>returns true if success or false.  If kvp is passed in, not a location.hash, then on success it will
+            ///return the newly set kvp object.</return>
             // test
             if (typeof (obj) !== 'object') return false;
 
