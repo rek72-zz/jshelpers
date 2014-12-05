@@ -77,6 +77,8 @@ var Helper = {
             } else {
                 location.hash = $.param(newObj);
             }
+            
+            return true;
         },
 
         remove: function (key, kvp/*optional*/) {
