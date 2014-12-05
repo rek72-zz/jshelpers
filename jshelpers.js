@@ -11,11 +11,10 @@ var Helper = {
     ///<summary>Some common helper/shortcut methods for efficiency</summary>
 	Kvp: {
 		/// <summary>
-		/// Controls for maintaining key/value pairs in location.hash or optionaly. It's main purpose is for managing the key/value
-		/// pairs in location.hash but optionally you can pass in a kvp string.
-		/// value that does not have a key (that follows the main navigation value) will be added to the array pairsObject.noKeys[].
-		/// </summary>
-		/// <param name=kv
+    		/// Controls for maintaining key/value pairs in location.hash or optionaly a kvp string (e.g. key1=value1&key2=value2).
+    		/// pairs in location.hash but optionally you can pass in a kvp string.
+    		/// value that does not have a key (that follows the main navigation value) will be added to the array pairsObject.noKeys[].
+    		/// </summary>
 		toObject: function (kvp/*optional*/) {
 			///<summary>Build an object literal from location.hash.</summary>
 			///<param name="kvp">String of key/value pairs, default grabs location.hash</param>
