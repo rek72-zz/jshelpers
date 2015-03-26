@@ -264,5 +264,3 @@ var Helper = {
         return returnArray;
     }
 };
-
-console.log(Helper.Kvp.toObject('key1=1&key2=2&key3&key4&key5=5'));
