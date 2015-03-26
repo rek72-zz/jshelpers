@@ -1,55 +1,50 @@
 //############################################################################################################################################
 //
 //  Namespace : Helper
-//  Description: Useful methods I made to make life easier
-//  Author:  rek72
+//  Description: Useful methods I made in the past to make my life easier
+//  Author:  Robert Kever
 //  Dependencies: jQuery 1.7+ required!
 //
 //############################################################################################################################################
 
 var Helper = {
     ///<summary>Some common helper/shortcut methods for efficiency</summary>
-	Kvp: {
-		/// <summary>
-    		/// Controls for maintaining key/value pairs in location.hash or optionaly a kvp string (e.g. key1=value1&key2=value2).
-    		/// pairs in location.hash but optionally you can pass in a kvp string.
-    		/// value that does not have a key (that follows the main navigation value) will be added to the array pairsObject.noKeys[].
-    		/// </summary>
-		toObject: function (kvp/*optional*/) {
-			///<summary>Build an object literal from location.hash.</summary>
-			///<param name="kvp">String of key/value pairs, default grabs location.hash</param>
-			// define
-			var h = kvp || location.hash;
-			var pairs = h.replace('#', '');
-			var pairsArray = pairs.split('&');
-			var pairsObject = {};
-			var hashOrphans = []; // hash values without keys that is NOT the main (first in string) hash value
+    Kvp: {
+        /// <summary>
+        /// Controls for maintaining key/value pairs in location.hash or optionaly a kvp string (e.g. key1=value1&key2=value2).
+        /// pairs in location.hash but optionally you can pass in a kvp string.
+        /// Values that do not have a key will be added to the array pairsObject.noKeys[].
+        /// </summary>
+        toObject: function(kvp /*optional*/ ) {
+            ///<summary>Build an object literal from location.hash.</summary>
+            ///<param name="kvp">String of key/value pairs, default grabs location.hash</param>
+            var h = kvp || location.hash;
+            var pairs = h.replace('#', '');
+            var pairsArray = pairs.split('&');
+            var pairsObject = {};
+            var hashOrphans = []; // hash values without keys that is NOT the main (first in string) hash value
 
-			// parse through the array to build the object
-			for (var i = 0, il = pairsArray.length; i < il; i++) {
-				var pair = pairsArray[i].split('=');
-				if (pair.length !== 2) {
-					if (pair.length === 0) continue; // get out of here if for some reason there is no value
-					if (i === 0) { // this will be the main (first in string) hash value with no key (typically the navigation as other app params will most likely contain keys
-						pairsObject.noKeyHash = unescape(pair[0]);
-					} else { // this is NOT the main (first in string) hash value and does not have a key (orphaned). Not sure why we'd be here, an edge case for sure, but here you go. 
-						hashOrphans.push(unescape(pair[0]));
-						pairsObject.noKeys = hashOrphans;
-					}
-				} else {
-					pairsObject[pair[0]] = unescape(pair[1]); // we have both a key and value pair
-				}
-			}
+            // parse through the array to build the object
+            for (var i = 0, il = pairsArray.length; i < il; i++) {
+                var pair = pairsArray[i].split('=');
+                if (pair.length !== 2) {
+                    if (pair.length === 0) continue; // get out of here if for some reason there is no value
+                    hashOrphans.push(unescape(pair[0]));
+                    pairsObject.noKeys = hashOrphans;
+                } else {
+                    pairsObject[pair[0]] = unescape(pair[1]); // we have both a key and value pair
+                }
+            }
 
-			return pairsObject;
-		},
+            return pairsObject;
+        },
 
-        get: function (key, kvp/*optional*/) {
+        get: function(key, kvp /*optional*/ ) {
             ///<summary>Returns the value of the key from the pairs (ex: location.hash) string</summary>
-            ///<param name="key" type="string">the key to return the value of</param>
+            ///<param name="key" type="string">The key to return the value of</param>
             ///<param name="kvp" type="string">String of key/value pairs, default grabs location.hash</param>
             // test
-            if (typeof (key) === 'undefined' || key.length < 1) return false;
+            if (typeof(key) === 'undefined' || key.length < 1) return false;
 
             // get key/value pairs first
             var pairsObject = (arguments.length === 2) ? this.toObject(kvp) : this.toObject();
@@ -59,17 +54,16 @@ var Helper = {
             return pairsObject[key] || false;
         },
 
-        set: function (obj, kvp/*optional*/) {
+        set: function(obj, kvp /*optional*/ ) {
             ///<summary>Sets the value of the key from the pairs (ex: location.hash) string. Sets location.hash OR
             ///if kvp argument exists, returns the updated kvp string.</summary>
             ///<param name="obj" type="object literal">object literal of key/values to set</param>
             ///<param name="kvp" type="string">String of key/value pairs, default grabs location.hash</param>
-            ///<return>returns true if success or false.  If kvp is passed in, not a location.hash, then on success it will
+            ///<return>Returns true if success or false.  If kvp is passed in, not a location.hash, then on success it will
             ///return the newly set kvp object.</return>
             // test
-            if (typeof (obj) !== 'object') return false;
+            if (typeof(obj) !== 'object') return false;
 
-            // define
             var pair = this.toObject(kvp) || this.toObject();
             var newObj = $.extend(pair, obj);
 
@@ -78,16 +72,16 @@ var Helper = {
             } else {
                 location.hash = $.param(newObj);
             }
-            
+
             return true;
         },
 
-        remove: function (key, kvp/*optional*/) {
+        remove: function(key, kvp /*optional*/ ) {
             /// <summary>Removes the key from the pairs (ex: location.hash) string.</summary>
             /// <param name="key" type="object literal">object literal of key/values to set</param>
             /// <param name="kvp" type="string">[optional] String of key/value pairs, default grabs location.hash</param>
             // test
-            if (typeof (key) === 'undefined' || key.length < 1) return false;
+            if (typeof(key) === 'undefined' || key.length < 1) return false;
 
             // define
             var obj = this.toObject(kvp) || this.toObject();
@@ -96,7 +90,7 @@ var Helper = {
             delete obj[key];
 
             // return updated obj
-            if (typeof (kvp) != 'undefined') {
+            if (typeof(kvp) != 'undefined') {
                 return $.param(obj); // return updated key/value pairs
             } else {
                 location.hash = $.param(obj); // update hash
@@ -120,10 +114,10 @@ var Helper = {
         // object or unlimited arguments
         if (typeof (markers) === 'object') { // markers is an Object Literal
             // loop through string
-            $.each(markers, function (key, value) {
+            for (var key in markers) {
                 var regEx = new RegExp('{' + key + '}', 'g');
-                string = string.replace(regEx, value);
-            });
+                string = string.replace(regEx, markers[key]);
+            } 
         } else if (arguments.length > 1) { // markers is mixed arguments
             // loop through string
             for (var i = 0, il = arguments.length - 1; i < il; i++) {
@@ -135,44 +129,14 @@ var Helper = {
         return string;
     },
 
-    debug: false, // boolean for Helper.log()
-
-    log: function (message) {
-        ///<summary>Debug logging for IE
-        ///Useful for debugging in production since IE doesn't support console object.  Allows you to put logs in code without worrying about output until Helper.debug=true (which could be set via url query string for debugging in production)</summary>
-        ///<param name="message" type="string">message to be logged</param>
-        // test
-        if (!Helper.debug) return false;
-
-        // define
-        var msg = message || 'undefined';
-
-        // log with console or make a console (for sink'n ie)
-        if (!window.console) {
-            var id = 'stinkin_IE_console_logger';
-            if (typeof (msg) === 'object') msg = '[OBJECT]: ' + $.param(msg);
-            msg = '> ' + msg + '<br />';
-
-            if ($('#' + id).length > 0) {
-                $('#' + id).append(msg);
-            } else {
-                $('body').append($('<div id="' + id + '" />').html('<h3 style="color: #ff9900; font-size: 1.2em">Stink\'n IE Console Logger</h3><br />' + msg));
-            }
-        } else {
-            return console.log(msg);
-        }
-
-        return true;
-    },
-
-    twoDigits: function (n) {
+    twoDigits: function(n) {
         ///<summary>Takes a single digit number and returns it as a string with pre-pending 0.
         ///Example 1 would be returned as 01.  Useful for date numbers.</summary>
         ///<param name="n">Number</param>
-        return (n < 10) ? '' + 0 + n :'' + n;
+        return (n < 10) ? '' + 0 + n : '' + n;
     },
 
-    pop: function (url, options/*optional*/) {
+    pop: function(url, options /*optional*/ ) {
         ///<summary> Popout window. Example: pop("http://google.com", {windowName: "googleWindow", toolbar: "yes", resizeable: "yes"});</summary>
         ///<param name="url">URL to open</param>
         ///<param name="options">Object literal settings</param>
@@ -207,54 +171,52 @@ var Helper = {
         return window.open(url, s.windowName, 'toolbar=' + s.toolbar + ',menubar=' + s.menubar + ',resizable=' + s.resizable + ',scrollbars=' + s.scrollbars + ',width=' + s.width + ',height=' + s.height + centerWindow);
     },
 
-    nl2br: function (string) {
+    nl2br: function(string) {
         ///<summary>Replaces any /n breaks with html <br />.  Useful for textarea data that is used in non-input dom elements.</summary>
         ///<param name="string">the string to parse</param>
         return string.replace(/\n/g, '<br />');
     },
 
-    selectors: function (selectors/*unlimited arguments*/) {
+    selectors: function(selectors /*unlimited arguments*/ ) {
         /// <summary>Build multiple selectors for jQuery.  Serves as a shortcut for jquery selectors by eleminating the use of [ + ', ' + ] between selectors or having to use jQuery.add().add()</summary>
         /// <param name="selectors">Can be an unlimited amount of arguments. Examples: Utils.slctrs(string1, string2, string3, string4)</param>
-        // define
         var selectorsString = '';
 
         // loop through args or array
-		var looper = (typeof(selectors) === 'string') ? arguments : selectors; // set looper as the selector, if an array, otherwise use keyword arguments
-		for (var i = 0, il = looper.length; i < il; i++) {
-			var separator = (i > 0) ? ', ' : '';
-			selectorsString = selectorsString + separator + looper[i];
-		}
+        var looper = (typeof(selectors) === 'string') ? arguments : selectors; // set looper as the selector, if an array, otherwise use keyword arguments
+        for (var i = 0, il = looper.length; i < il; i++) {
+            var separator = (i > 0) ? ', ' : '';
+            selectorsString = selectorsString + separator + looper[i];
+        }
 
         // return string
         return selectorsString;
     },
 
-    truncate: function (string, maxChars, replaceWith/*optional*/) {
+    truncate: function(string, maxChars, replaceWith /*optional*/ ) {
         ///<summary>Takes a string and truncates it if the length is larger than nMaxChars.</summary>
         ///<param name="string">String to truncate</param>
         ///<param name="maxChars">Max number of chars before it's truncated</param>
-        ///<param name="replaceWith">string to replace with truncated text. Defaults to '&#8230;'</param>
+        ///<param name="replaceWith">String to replace with truncated text. Defaults to '&#8230;'</param>
         // test
         if (!string) return false;
         if (!maxChars || string.length <= maxChars) return string;
 
         // define
         var maxFit = maxChars - 3;
-        var truncateAt =(truncateAt === -1 || truncateAt < maxChars / 2) ? maxFit : string.lastIndexOf(' ', maxFit);
-		var replaceString = (arguments.length === 3) ? replaceWith : '&#8230;';
+        var truncateAt = (truncateAt === -1 || truncateAt < maxChars / 2) ? maxFit : string.lastIndexOf(' ', maxFit);
+        var replaceString = (arguments.length === 3) ? replaceWith : '&#8230;';
 
         // return truncated string
         return string.substr(0, truncateAt) + replaceString;
     },
 
-    enterKeypress: function (inputField, buttonToClick, focusInputField) {
+    enterKeypress: function(inputField, buttonToClick, focusInputField) {
         /// <summary>Set "enter" keypress to click button when input field is in focus</summary>
-        /// <param name="inputField" type="string">selector for text input</param>
-        /// <param name="buttonToClick" type="string">selector for button to click</param>
-        /// <param name="focusInputField" type="string">pass in false to avoid the automatic .focus() call</param>
-        ///
-        $(inputField).unbind('keydown').keydown(function (e) {
+        /// <param name="inputField" type="string">Selector for text input</param>
+        /// <param name="buttonToClick" type="string">Selector for button to click</param>
+        /// <param name="focusInputField" type="string">Pass in false to avoid the automatic .focus() call</param>
+        $(inputField).off('keydown').on('keydown', function(e) {
             if (e.keyCode === 13) {
                 e.preventDefault();
                 $(buttonToClick).click();
@@ -264,17 +226,10 @@ var Helper = {
         if ((focusInputField === undefined) || (focusInputField === true)) $(inputField).focus();
     },
 
-    isNumber: function (num) {
-        /// <summary>Returns boolean with whether a string is a valid as an number</summary>
-        /// <param name="num">string</param>
-        return !isNaN(parseFloat(num)) && isFinite(num);
-    },
-
-    addCommas: function (num) {
+    addCommas: function(num) {
         /// <summary>Returns a number with commas. Example 1234567 returns as 1,234,567</summary>
-        /// <param name="num">number to parse</param>
-        // define
-        num += '';
+        /// <param name="num">Number to parse</param>
+        num += ''; // convert number to string
         var numArray = num.split('.');
         var numA = numArray[0];
         var numB = numArray.length > 1 ? '.' + numArray[1] : '';
@@ -286,25 +241,28 @@ var Helper = {
         }
 
         return numA + numB;
-    }
+    },
 
-    getResponseTimeInSecs: function (startTime, endTime) {
+    getResponseTimeInSecs: function(startTime, endTime) {
         /// <summary>Returns the response time from a start and end time (such as in XHR call) in seconds.</summary>
-        /// <param name="startTime">js Date</param>
-        /// <param name="endTime">js Date</param>
+        /// <param name="startTime">JS Date</param>
+        /// <param name="endTime">JS Date</param>
         return (endTime.getTime() - startTime.getTime()) / 1000;
     },
 
-    unique: function (array) {
+    unique: function(arr) {
         /// <summary>Returns an array of unique values</summary>
+        /// <param name="arr">Array</param>
         var tempArray = {};
-		var returnArray = [];
-        for (var i = 0, n = array.length; i < n; ++i) {
-            if (!tempArray[array[i]]) { 
-				tempArray[array[i]] = true;
-				returnArray.push(array[i]);
-			}
+        var returnArray = [];
+        for (var i = 0, n = arr.length; i < n; ++i) {
+            if (!tempArray[arr[i]]) {
+                tempArray[arr[i]] = true;
+                returnArray.push(arr[i]);
+            }
         }
         return returnArray;
     }
 };
+
+console.log(Helper.Kvp.toObject('key1=1&key2=2&key3&key4&key5=5'));
