@@ -3,7 +3,7 @@
 //  Namespace : Helper
 //  Description: Useful methods I made in the past to make my life easier
 //  Author:  Robert Kever
-//  Dependencies: jQuery 1.7+ required!
+//  Dependencies: jQuery 1.7+ required as I typically use jQuery in my projects. Using $.extend, $.param, and $(dom)
 //
 //############################################################################################################################################
 
